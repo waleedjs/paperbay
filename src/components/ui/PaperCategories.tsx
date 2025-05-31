@@ -19,7 +19,7 @@ export default function PaperCategories() {
             <p className="text-gray-600 font-body mb-6">
               Access comprehensive papers with marking schemes and examiner reports.
             </p>
-            <Link href="/as-a-level">
+            <Link href="/past-papers/as-a-level">
               <button className="bg-primary font-body cursor-pointer hover:bg-[#e75222]/90 text-white px-4 py-2 rounded-md font-medium transition-all">
                 Browse Papers
               </button>
@@ -34,7 +34,7 @@ export default function PaperCategories() {
             <p className="text-gray-600 font-body mb-6">
               Find papers from all subjects with detailed solutions and guidance.
             </p>
-            <Link href="/o-level">
+            <Link href="/past-papers/o-level">
               <button className="bg-primary font-body cursor-pointer hover:bg-[#e75222]/90 text-white px-4 py-2 rounded-md font-medium transition-all">
                 Browse Papers
               </button>
@@ -49,7 +49,7 @@ export default function PaperCategories() {
             <p className="text-gray-600 font-body mb-6">
               Explore papers with comprehensive solutions and study materials.
             </p>
-            <Link href="/igcse">
+            <Link href="/past-papers/igcse">
               <button className="bg-primary font-body cursor-pointer hover:bg-[#e75222]/90 text-white px-4 py-2 rounded-md font-medium transition-all">
                 Browse Papers
               </button>
