@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Home, Search, ArrowLeft, BookOpen, FileText, HelpCircle } from "lucide-react";
+import { Home, ArrowLeft, BookOpen, FileText, HelpCircle } from "lucide-react";
 
 export default function NotFound() {
   return (
@@ -48,7 +48,7 @@ export default function NotFound() {
               </div>
 
               <h2 className="mt-6 text-2xl font-bold text-gray-800 text-center md:text-left">
-                Oops! We can't find that page
+                Oops! We can not find that page
               </h2>
 
               <p className="mt-4 text-gray-600 text-center md:text-left">

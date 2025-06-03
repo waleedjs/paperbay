@@ -1,6 +1,6 @@
+// app/blog/page.tsx
 import React from 'react';
 
-// Define interfaces and enum within the file
 interface Category {
   id: string;
   name: string;
@@ -8,9 +8,9 @@ interface Category {
   slug: string;
   metaTitle?: string;
   metaDescription?: string;
-  posts?: Post[]; // Optional as it might not always be loaded
-  createdAt: Date;
-  updatedAt: Date;
+  posts?: Post[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface Author {
@@ -30,9 +30,9 @@ interface Tag {
   name: string;
   slug: string;
   description?: string;
-  posts?: Post[]; // Optional as it might not always be loaded
-  createdAt: Date;
-  updatedAt: Date;
+  posts?: Post[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 enum PostStatus {
@@ -54,13 +54,13 @@ interface Post {
   metaKeywords?: string[];
   structuredData?: object;
   viewCount: number;
-  searchVector?: unknown;
+  // searchVector?: unknown;
   author: Author;
   category: Category;
   tags: Tag[];
-  publishedAt?: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  publishedAt?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface ApiResponse {
@@ -78,9 +78,9 @@ interface ApiResponse {
   statusCode: number;
 }
 
-// Simulated API fetch function (replace with actual API call)
+// Simulated API fetch
 async function fetchPosts(): Promise<ApiResponse> {
-  // Mock data for testing; replace with your API endpoint
+  const now = new Date().toISOString();
   return {
     data: {
       items: [
@@ -99,22 +99,29 @@ async function fetchPosts(): Promise<ApiResponse> {
             role: 'Writer',
             isVerified: true,
             isActive: true,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
+            createdAt: now,
+            updatedAt: now,
           },
           category: {
             id: 'c1',
             name: 'Technology',
             slug: 'technology',
-            createdAt: new Date(),
-            updatedAt: new Date(),
+            createdAt: now,
+            updatedAt: now,
           },
           tags: [
-            { id: 't1', name: 'Tech', slug: 'tech', createdAt: new Date(), updatedAt: new Date() },
+            {
+              id: 't1',
+              name: 'Tech',
+              slug: 'tech',
+              createdAt: now,
+              updatedAt: now,
+            },
           ],
           viewCount: 100,
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          createdAt: now,
+          updatedAt: now,
+          publishedAt: now,
         },
       ],
       meta: {
@@ -130,61 +137,44 @@ async function fetchPosts(): Promise<ApiResponse> {
   };
 }
 
-export default async function Page() {
+// ✅ Correct Server Component
+export default async function BlogPage() {
   let posts: Post[] = [];
   let error: string | null = null;
 
   try {
-    const data: ApiResponse = await fetchPosts();
-    posts = data.data.items;
+    const response = await fetchPosts();
+    posts = response.data.items;
   } catch (err) {
     error = err instanceof Error ? err.message : 'An unknown error occurred';
   }
 
   return (
-    <div className="blog-page">
-      <h1>Blog Posts</h1>
+    <div className="p-6 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6">Blog Posts</h1>
+
       {error ? (
-        <p className="error">Error: {error}</p>
+        <p className="text-red-500">Error: {error}</p>
       ) : posts.length > 0 ? (
-        <ul>
+        <ul className="space-y-6">
           {posts.map((post) => (
-            <li key={post.id}>
-              <h2>{post.title}</h2>
-              <p>{post.excerpt}</p>
-              <p>
-                Status: {post.status}, Author: {post.author.fullName}, Category: {post.category.name}
+            <li key={post.id} className="border border-gray-300 rounded-lg p-5 shadow-sm">
+              <h2 className="text-2xl font-semibold mb-2">{post.title}</h2>
+              <p className="text-gray-700 mb-2">{post.excerpt}</p>
+              <p className="text-sm text-gray-600">
+                <strong>Status:</strong> {post.status} &nbsp;|&nbsp;
+                <strong>Author:</strong> {post.author.fullName} &nbsp;|&nbsp;
+                <strong>Category:</strong> {post.category.name}
               </p>
-              <p>Published: {post.publishedAt?.toLocaleDateString() || 'Not published'}</p>
+              <p className="text-sm text-gray-500">
+                Published: {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : 'Not published'}
+              </p>
             </li>
           ))}
         </ul>
       ) : (
         <p>No posts available.</p>
       )}
-      <style jsx>{`
-        .blog-page {
-          padding: 20px;
-          max-width: 1200px;
-          margin: 0 auto;
-        }
-        .error {
-          color: red;
-        }
-        ul {
-          list-style: none;
-          padding: 0;
-        }
-        li {
-          margin-bottom: 20px;
-          border: 1px solid #ddd;
-          padding: 10px;
-          border-radius: 5px;
-        }
-        h2 {
-          margin: 0 0 10px 0;
-        }
-      `}</style>
     </div>
   );
 }
