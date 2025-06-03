@@ -2,7 +2,17 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function SubjectDetailPage({ params }: { params: { code: string } }) {
+// Define the type for params
+interface Params {
+  code: string;
+}
+
+// Define the props type for the page
+interface SubjectDetailPageProps {
+  params: Params;
+}
+
+export default function SubjectDetailPage({ params }: SubjectDetailPageProps) {
   const subject = subjects.find((s) => s.code === params.code);
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,7 +25,10 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-2">Subject not found</h1>
           <p className="mb-4">The subject you are looking for does not exist.</p>
-          <button onClick={() => router.back()} className="bg-primary text-white px-4 py-2 rounded-md">
+          <button
+            onClick={() => router.back()}
+            className="bg-primary text-white px-4 py-2 rounded-md"
+          >
             Go back to subjects
           </button>
         </div>
@@ -25,7 +38,10 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
 
   // Generate years from 2010 to current year
   const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: currentYear - 2009 }, (_, i) => (currentYear - i).toString());
+  const years = Array.from(
+    { length: currentYear - 2009 },
+    (_, i) => (currentYear - i).toString()
+  );
 
   // Filter papers based on search and active year tab
   const filteredPapers = papers
@@ -74,7 +90,9 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
 
   // Function to open PDF in a new tab with Google Docs Viewer
   const openPdfViewer = (pdfUrl: string) => {
-    const googleDocsUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(pdfUrl)}&embedded=true`;
+    const googleDocsUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(
+      pdfUrl
+    )}&embedded=true`;
     window.open(googleDocsUrl, "_blank");
   };
 
@@ -84,8 +102,11 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
         <div className="mb-8">
           <div className="flex items-center mb-2">
             <button
-              onClick={() => router.push(subject.level === "A-Level" ? "/as-a-level" : "/igcse")}
-              className="text-primary hover:underline font-medium">
+              onClick={() =>
+                router.push(subject.level === "A-Level" ? "/as-a-level" : "/igcse")
+              }
+              className="text-primary hover:underline font-medium"
+            >
               {subject.level === "A-Level" ? "All A-Level Subjects" : "All IGCSE Subjects"}
             </button>
             <svg
@@ -93,8 +114,14 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
               className="h-4 w-4 mx-2 text-gray-400"
               fill="none"
               viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
             </svg>
             <span className="text-gray-600">{subject.name}</span>
           </div>
@@ -112,7 +139,8 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
                 className="h-5 w-5 text-gray-400"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor">
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -135,28 +163,41 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
             <button
               onClick={() => setViewMode("list")}
               className={`p-2 rounded-md ${
-                viewMode === "list" ? "bg-primary text-white" : "bg-white text-gray-600 hover:bg-gray-100"
-              }`}>
+                viewMode === "list"
+                  ? "bg-primary text-white"
+                  : "bg-white text-gray-600 hover:bg-gray-100"
+              }`}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             </button>
             <button
               onClick={() => setViewMode("grid")}
               className={`p-2 rounded-md ${
-                viewMode === "grid" ? "bg-primary text-white" : "bg-white text-gray-600 hover:bg-gray-100"
-              }`}>
+                viewMode === "grid"
+                  ? "bg-primary text-white"
+                  : "bg-white text-gray-600 hover:bg-gray-100"
+              }`}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor">
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -175,8 +216,11 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
               <button
                 onClick={() => setActiveYearTab("all")}
                 className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                  activeYearTab === "all" ? "bg-primary text-white" : "text-gray-700 hover:bg-gray-100"
-                }`}>
+                  activeYearTab === "all"
+                    ? "bg-primary text-white"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
+              >
                 All
               </button>
               {years.map((year) => (
@@ -184,8 +228,11 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
                   key={year}
                   onClick={() => setActiveYearTab(year)}
                   className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                    activeYearTab === year ? "bg-primary text-white" : "text-gray-700 hover:bg-gray-100"
-                  }`}>
+                    activeYearTab === year
+                      ? "bg-primary text-white"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
                   {year}
                 </button>
               ))}
@@ -197,27 +244,36 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
         {papersByYear.length > 0 ? (
           <div className="space-y-8">
             {papersByYear.map((yearGroup) => (
-              <div key={yearGroup.year} className="bg-white rounded-xl shadow-md overflow-hidden">
-                <div className="bg-secondery px-6 py-3 text-white font-heading font-medium">{yearGroup.year}</div>
+              <div
+                key={yearGroup.year}
+                className="bg-white rounded-xl shadow-md overflow-hidden"
+              >
+                <div className="bg-secondery px-6 py-3 text-white font-heading font-medium">
+                  {yearGroup.year}
+                </div>
 
                 <div className="p-6">
                   {yearGroup.sessions.map((sessionGroup) => (
                     <div key={sessionGroup.session} className="mb-6 last:mb-0">
-                      <h3 className="text-lg font-medium text-gray-900 mb-3">{sessionGroup.session}</h3>
+                      <h3 className="text-lg font-medium text-gray-900 mb-3">
+                        {sessionGroup.session}
+                      </h3>
 
                       {viewMode === "list" ? (
                         <div className="space-y-2">
                           {sessionGroup.papers.map((paper) => (
                             <div
                               key={paper.id}
-                              className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                              className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                            >
                               <div className="flex-shrink-0 mr-3">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   className="h-8 w-8 text-red-500"
                                   fill="none"
                                   viewBox="0 0 24 24"
-                                  stroke="currentColor">
+                                  stroke="currentColor"
+                                >
                                   <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
@@ -233,7 +289,9 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
                                 </svg>
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-gray-900 truncate">{paper.title}</p>
+                                <p className="text-sm font-medium text-gray-900 truncate">
+                                  {paper.title}
+                                </p>
                                 <p className="text-xs text-gray-500">
                                   {paper.year} {paper.session} • Paper {paper.paperNumber}
                                 </p>
@@ -241,13 +299,15 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
                               <div className="flex-shrink-0 ml-2 space-x-2">
                                 <button
                                   onClick={() => openPdfViewer(paper.pdfUrl)}
-                                  className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                                  className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                                >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="h-4 w-4 mr-1"
                                     fill="none"
                                     viewBox="0 0 24 24"
-                                    stroke="currentColor">
+                                    stroke="currentColor"
+                                  >
                                     <path
                                       strokeLinecap="round"
                                       strokeLinejoin="round"
@@ -267,13 +327,15 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
                                   href={paper.pdfUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                                  className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                                >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="h-4 w-4 mr-1"
                                     fill="none"
                                     viewBox="0 0 24 24"
-                                    stroke="currentColor">
+                                    stroke="currentColor"
+                                  >
                                     <path
                                       strokeLinecap="round"
                                       strokeLinejoin="round"
@@ -292,14 +354,16 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
                           {sessionGroup.papers.map((paper) => (
                             <div
                               key={paper.id}
-                              className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                              className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                            >
                               <div className="flex items-center justify-center h-16 mb-3">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   className="h-12 w-12 text-red-500"
                                   fill="none"
                                   viewBox="0 0 24 24"
-                                  stroke="currentColor">
+                                  stroke="currentColor"
+                                >
                                   <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
@@ -314,20 +378,24 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
                                   />
                                 </svg>
                               </div>
-                              <h4 className="text-sm font-medium text-gray-900 mb-1 truncate">{paper.title}</h4>
+                              <h4 className="text-sm font-medium text-gray-900 mb-1 truncate">
+                                {paper.title}
+                              </h4>
                               <p className="text-xs text-gray-500 mb-3">
                                 {paper.year} {paper.session} • Paper {paper.paperNumber}
                               </p>
                               <div className="flex space-x-2">
                                 <button
                                   onClick={() => openPdfViewer(paper.pdfUrl)}
-                                  className="flex-1 inline-flex justify-center items-center px-2 py-1 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-primary">
+                                  className="flex-1 inline-flex justify-center items-center px-2 py-1 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-primary"
+                                >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="h-3 w-3 mr-1"
                                     fill="none"
                                     viewBox="0 0 24 24"
-                                    stroke="currentColor">
+                                    stroke="currentColor"
+                                  >
                                     <path
                                       strokeLinecap="round"
                                       strokeLinejoin="round"
@@ -347,13 +415,15 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
                                   href={paper.pdfUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex-1 inline-flex justify-center items-center px-2 py-1 border border-transparent text-xs font-medium rounded text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-1 focus:ring-primary">
+                                  className="flex-1 inline-flex justify-center items-center px-2 py-1 border border-transparent text-xs font-medium rounded text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-1 focus:ring-primary"
+                                >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="h-3 w-3 mr-1"
                                     fill="none"
                                     viewBox="0 0 24 24"
-                                    stroke="currentColor">
+                                    stroke="currentColor"
+                                  >
                                     <path
                                       strokeLinecap="round"
                                       strokeLinejoin="round"
@@ -381,7 +451,8 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
               className="h-12 w-12 mx-auto text-gray-400 mb-4"
               fill="none"
               viewBox="0 0 24 24"
-              stroke="currentColor">
+              stroke="currentColor"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -398,7 +469,6 @@ export default function SubjectDetailPage({ params }: { params: { code: string }
   );
 }
 
-// Combined A-Level and O-Level subjects
 const subjects = [
   // A-Level Subjects
   { id: 1, name: "Accounting", code: "9706", important: false, level: "A-Level" },
