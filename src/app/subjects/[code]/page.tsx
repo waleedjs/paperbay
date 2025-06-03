@@ -2,17 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// Define the type for params
-interface Params {
-  code: string;
-}
-
-// Define the props type for the page
-interface Props {
-  params: Params;
-}
-
-export default function SubjectDetailPage({ params }: Props) {
+export default function SubjectDetailPage({ params }: { params: { code: string } }) {
   const subject = subjects.find((s) => s.code === params.code);
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const [searchQuery, setSearchQuery] = useState("");
@@ -25,10 +15,7 @@ export default function SubjectDetailPage({ params }: Props) {
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-2">Subject not found</h1>
           <p className="mb-4">The subject you are looking for does not exist.</p>
-          <button
-            onClick={() => router.back()}
-            className="bg-primary text-white px-4 py-2 rounded-md"
-          >
+          <button onClick={() => router.back()} className="bg-primary text-white px-4 py-2 rounded-md">
             Go back to subjects
           </button>
         </div>
@@ -38,10 +25,7 @@ export default function SubjectDetailPage({ params }: Props) {
 
   // Generate years from 2010 to current year
   const currentYear = new Date().getFullYear();
-  const years = Array.from(
-    { length: currentYear - 2009 },
-    (_, i) => (currentYear - i).toString()
-  );
+  const years = Array.from({ length: currentYear - 2009 }, (_, i) => (currentYear - i).toString());
 
   // Filter papers based on search and active year tab
   const filteredPapers = papers
@@ -90,24 +74,31 @@ export default function SubjectDetailPage({ params }: Props) {
 
   // Function to open PDF in a new tab with Google Docs Viewer
   const openPdfViewer = (pdfUrl: string) => {
-    const googleDocsUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(
-      pdfUrl
-    )}&embedded=true`;
+    const googleDocsUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(pdfUrl)}&embedded=true`;
     window.open(googleDocsUrl, "_blank");
   };
-
-  return (
+return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <div className="flex items-center mb-2">
             <button
               onClick={() =>
-                router.push(subject.level === "A-Level" ? "past-papers/as-a-level" : "/igcse")
+                router.push(
+                  subject.level === "A-Level"
+                    ? "/past-papers/as-a-level"
+                    : subject.level === "O-Level"
+                    ? "/past-papers/o-level"
+                    : "/past-papers/igcse"
+                )
               }
               className="text-primary hover:underline font-medium"
             >
-              {subject.level === "A-Level" ? "All A-Level Subjects" : "All IGCSE Subjects"}
+              {subject.level === "A-Level"
+                ? "All A-Level Subjects"
+                : subject.level === "O-Level"
+                ? "All O-Level Subjects"
+                : "All IGCSE Subjects"}
             </button>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -116,12 +107,7 @@ export default function SubjectDetailPage({ params }: Props) {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
             <span className="text-gray-600">{subject.name}</span>
           </div>
@@ -163,9 +149,7 @@ export default function SubjectDetailPage({ params }: Props) {
             <button
               onClick={() => setViewMode("list")}
               className={`p-2 rounded-md ${
-                viewMode === "list"
-                  ? "bg-primary text-white"
-                  : "bg-white text-gray-600 hover:bg-gray-100"
+                viewMode === "list" ? "bg-primary text-white" : "bg-white text-gray-600 hover:bg-gray-100"
               }`}
             >
               <svg
@@ -175,20 +159,13 @@ export default function SubjectDetailPage({ params }: Props) {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
             <button
               onClick={() => setViewMode("grid")}
               className={`p-2 rounded-md ${
-                viewMode === "grid"
-                  ? "bg-primary text-white"
-                  : "bg-white text-gray-600 hover:bg-gray-100"
+                viewMode === "grid" ? "bg-primary text-white" : "bg-white text-gray-600 hover:bg-gray-100"
               }`}
             >
               <svg
@@ -216,9 +193,7 @@ export default function SubjectDetailPage({ params }: Props) {
               <button
                 onClick={() => setActiveYearTab("all")}
                 className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                  activeYearTab === "all"
-                    ? "bg-primary text-white"
-                    : "text-gray-700 hover:bg-gray-100"
+                  activeYearTab === "all" ? "bg-primary text-white" : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
                 All
@@ -228,9 +203,7 @@ export default function SubjectDetailPage({ params }: Props) {
                   key={year}
                   onClick={() => setActiveYearTab(year)}
                   className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                    activeYearTab === year
-                      ? "bg-primary text-white"
-                      : "text-gray-700 hover:bg-gray-100"
+                    activeYearTab === year ? "bg-primary text-white" : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
                   {year}
@@ -244,20 +217,13 @@ export default function SubjectDetailPage({ params }: Props) {
         {papersByYear.length > 0 ? (
           <div className="space-y-8">
             {papersByYear.map((yearGroup) => (
-              <div
-                key={yearGroup.year}
-                className="bg-white rounded-xl shadow-md overflow-hidden"
-              >
-                <div className="bg-secondery px-6 py-3 text-white font-heading font-medium">
-                  {yearGroup.year}
-                </div>
+              <div key={yearGroup.year} className="bg-white rounded-xl shadow-md overflow-hidden">
+                <div className="bg-secondery px-6 py-3 text-white font-heading font-medium">{yearGroup.year}</div>
 
                 <div className="p-6">
                   {yearGroup.sessions.map((sessionGroup) => (
                     <div key={sessionGroup.session} className="mb-6 last:mb-0">
-                      <h3 className="text-lg font-medium text-gray-900 mb-3">
-                        {sessionGroup.session}
-                      </h3>
+                      <h3 className="text-lg font-medium text-gray-900 mb-3">{sessionGroup.session}</h3>
 
                       {viewMode === "list" ? (
                         <div className="space-y-2">
@@ -283,9 +249,7 @@ export default function SubjectDetailPage({ params }: Props) {
                                 </svg>
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-gray-900 truncate">
-                                  {paper.title}
-                                </p>
+                                <p className="text-sm font-medium text-gray-900 truncate">{paper.title}</p>
                                 <p className="text-xs text-gray-500">
                                   {paper.year} {paper.session} • Paper {paper.paperNumber}
                                 </p>
@@ -366,9 +330,7 @@ export default function SubjectDetailPage({ params }: Props) {
                                   />
                                 </svg>
                               </div>
-                              <h4 className="text-sm font-medium text-gray-900 mb-1 truncate">
-                                {paper.title}
-                              </h4>
+                              <h4 className="text-sm font-medium text-gray-900 mb-1 truncate">{paper.title}</h4>
                               <p className="text-xs text-gray-500 mb-3">
                                 {paper.year} {paper.session} • Paper {paper.paperNumber}
                               </p>
@@ -457,6 +419,7 @@ export default function SubjectDetailPage({ params }: Props) {
   );
 }
 
+// Combined A-Level and O-Level subjects
 const subjects = [
   // A-Level Subjects
   { id: 1, name: "Accounting", code: "9706", important: false, level: "A-Level" },
@@ -590,7 +553,7 @@ const subjects = [
   { id: 125, name: "English", code: "0486", important: false, level: "IGCSE" },
   { id: 126, name: "English", code: "0500", important: false, level: "IGCSE" },
   { id: 127, name: "English", code: "0510", important: false, level: "IGCSE" },
-  { id: 128, name: "English", code: "0511", important: false, Limitlevel: "IGCSE" },
+  { id: 128, name: "English", code: "0511", important: false, level: "IGCSE" },
   { id: 129, name: "English", code: "0522", important: false, level: "IGCSE" },
   { id: 130, name: "English", code: "0524", important: false, level: "IGCSE" },
   { id: 131, name: "English", code: "0526", important: false, level: "IGCSE" },
