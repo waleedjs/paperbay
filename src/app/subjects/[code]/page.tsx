@@ -8,11 +8,11 @@ interface Params {
 }
 
 // Define the props type for the page
-interface SubjectDetailPageProps {
+interface Props {
   params: Params;
 }
 
-export default function SubjectDetailPage({ params }: SubjectDetailPageProps) {
+export default function SubjectDetailPage({ params }: Props) {
   const subject = subjects.find((s) => s.code === params.code);
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const [searchQuery, setSearchQuery] = useState("");
@@ -103,7 +103,7 @@ export default function SubjectDetailPage({ params }: SubjectDetailPageProps) {
           <div className="flex items-center mb-2">
             <button
               onClick={() =>
-                router.push(subject.level === "A-Level" ? "/as-a-level" : "/igcse")
+                router.push(subject.level === "A-Level" ? "past-papers/as-a-level" : "/igcse")
               }
               className="text-primary hover:underline font-medium"
             >
@@ -278,13 +278,7 @@ export default function SubjectDetailPage({ params }: SubjectDetailPageProps) {
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth={2}
-                                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                                  />
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M15 2v5a2 2 0 002 2h5"
+                                    d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 006 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
                                   />
                                 </svg>
                               </div>
@@ -368,13 +362,7 @@ export default function SubjectDetailPage({ params }: SubjectDetailPageProps) {
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth={2}
-                                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                                  />
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M15 2v5a2 2 0 002 2h5"
+                                    d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 006 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
                                   />
                                 </svg>
                               </div>
@@ -457,7 +445,7 @@ export default function SubjectDetailPage({ params }: SubjectDetailPageProps) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 006 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
               />
             </svg>
             <h3 className="text-lg font-medium text-gray-900 mb-1">No papers found</h3>
@@ -602,7 +590,7 @@ const subjects = [
   { id: 125, name: "English", code: "0486", important: false, level: "IGCSE" },
   { id: 126, name: "English", code: "0500", important: false, level: "IGCSE" },
   { id: 127, name: "English", code: "0510", important: false, level: "IGCSE" },
-  { id: 128, name: "English", code: "0511", important: false, level: "IGCSE" },
+  { id: 128, name: "English", code: "0511", important: false, Limitlevel: "IGCSE" },
   { id: 129, name: "English", code: "0522", important: false, level: "IGCSE" },
   { id: 130, name: "English", code: "0524", important: false, level: "IGCSE" },
   { id: 131, name: "English", code: "0526", important: false, level: "IGCSE" },
